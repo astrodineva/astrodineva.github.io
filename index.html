@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Your Name — Portfolio</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 2rem auto; max-width: 760px; line-height: 1.6; }
+    header { display:flex; align-items:center; justify-content:space-between; gap:1rem; }
+    .grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap:1rem; }
+    .card { border:1px solid #ddd; border-radius:14px; padding:1rem; }
+    a { text-decoration:none; }
+    h1,h2 { margin: 0.2em 0; }
+    footer { margin-top: 3rem; font-size: 0.9rem; color:#666; }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>Your Name</h1>
+      <p>Short tagline about what you do.</p>
+    </div>
+    <nav><a href="https://github.com/your-username">GitHub</a> · <a href="mailto:you@domain">Email</a></nav>
+  </header>
+
+  <h2>Selected Projects</h2>
+  <div id="projects" class="grid"></div>
+
+  <script>
+    // Auto-pull your top repos (edit username and filtering)
+    const username = "your-username";
+    fetch(`https://api.github.com/users/${username}/repos?per_page=100&sort=updated`)
+      .then(r => r.json())
+      .then(repos => {
+        const featured = repos
+          .filter(r => !r.fork)                       // hide forks
+          .filter(r => !r.archived)                   // hide archived
+          .filter(r => (r.topics||[]).includes("showcase") || r.stargazers_count > 0)
+          .sort((a,b)=> b.stargazers_count - a.stargazers_count)
+          .slice(0, 9);
+
+        const container = document.getElementById('projects');
+        featured.forEach(r => {
+          const el = document.createElement('article');
+          el.className = "card";
+          el.innerHTML = `
+            <h3><a href="${r.homepage || r.html_url}" target="_blank" rel="noopener">${r.name}</a></h3>
+            <p>${r.description || "No description provided."}</p>
+            <p>★ ${r.stargazers_count} · ${r.language || "—"}</p>
+            <p><a href="${r.html_url}">Repo</a>${r.homepage ? ` · <a href="${r.homepage}">Demo</a>` : ""}</p>
+          `;
+          container.appendChild(el);
+        });
+      });
+  </script>
+
+  <footer>© <span id="y"></span> Your Name</footer>
+  <script>document.getElementById('y').textContent = new Date().getFullYear()</script>
+</body>
+</html>
