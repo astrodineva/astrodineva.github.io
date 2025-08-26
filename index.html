@@ -1,60 +1,134 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Your Name — Portfolio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dineva — Astrophysics</title>
+  <meta name="description" content="Astrophysics • Solar physics and Activity • Space Weather • ML for time-series images" />
+  <link rel="icon" href="favicon.ico">
   <style>
-    body { font-family: system-ui, sans-serif; margin: 2rem auto; max-width: 760px; line-height: 1.6; }
-    header { display:flex; align-items:center; justify-content:space-between; gap:1rem; }
-    .grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap:1rem; }
-    .card { border:1px solid #ddd; border-radius:14px; padding:1rem; }
-    a { text-decoration:none; }
-    h1,h2 { margin: 0.2em 0; }
-    footer { margin-top: 3rem; font-size: 0.9rem; color:#666; }
+    :root{
+      --bg:#fff; --fg:#0b0b0c; --muted:#555; --link:#2563eb; --card:#f6f7f9; --border:#e6e7eb;
+    }
+    @media (prefers-color-scheme: dark){
+      :root{ --bg:#0b0b0c; --fg:#f3f4f6; --muted:#a1a1aa; --link:#60a5fa; --card:#111318; --border:#22242b; }
+    }
+    *{box-sizing:border-box}
+    body{margin:0; font:16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji","Segoe UI Emoji"; color:var(--fg); background:var(--bg)}
+    a{color:var(--link); text-decoration:none}
+    a:hover{text-decoration:underline}
+    .wrap{max-width:940px; margin:0 auto; padding:24px}
+    header{display:flex; align-items:center; gap:18px; padding:28px 0 8px; border-bottom:1px solid var(--border)}
+    header img{width:84px; height:84px; border-radius:50%; object-fit:cover; background:var(--card)}
+    h1{font-size:28px; margin:0}
+    .sub{color:var(--muted); margin-top:2px}
+    nav{display:flex; flex-wrap:wrap; gap:16px; padding:14px 0 4px}
+    nav a{padding:6px 10px; border-radius:10px}
+    main section{padding:28px 0; border-bottom:1px solid var(--border)}
+    h2{font-size:20px; margin:0 0 10px}
+    .grid{display:grid; gap:14px}
+    @media(min-width:720px){ .grid.cols-2{grid-template-columns:1fr 1fr} }
+    .card{padding:14px; background:var(--card); border:1px solid var(--border); border-radius:14px}
+    ul{margin:10px 0 0 18px}
+    footer{padding:30px 0 60px; color:var(--muted)}
+    .pill{display:inline-block; padding:2px 8px; border:1px solid var(--border); border-radius:999px; margin-right:8px; font-size:12px; color:var(--muted)}
+    .nowrap{white-space:nowrap}
   </style>
 </head>
 <body>
-  <header>
-    <div>
-      <h1>Your Name</h1>
-      <p>Short tagline about what you do.</p>
-    </div>
-    <nav><a href="https://github.com/your-username">GitHub</a> · <a href="mailto:you@domain">Email</a></nav>
-  </header>
+  <div class="wrap">
+    <!-- HEADER -->
+    <header>
+      <!-- Optional headshot: put a file named avatar.jpg/png in the repo root -->
+      <img src="avatar.jpg" alt="Profile photo" onerror="this.style.display='none'">
+      <div>
+        <h1>Denitsa Dineva</h1>
+        <div class="sub">Astrophysics • Solar activity • ML for time-series images</div>
+        <nav>
+          <a href="mailto:you@example.com">Email</a>
+          <a href="https://github.com/astrodineva">GitHub</a>
+          <a href="https://scholar.google.com/">Google Scholar</a>
+          <a href="https://orcid.org/">ORCID</a>
+          <a href="assets/cv.pdf">CV</a>
+        </nav>
+      </div>
+    </header>
 
-  <h2>Selected Projects</h2>
-  <div id="projects" class="grid"></div>
+    <!-- ABOUT -->
+    <main>
+      <section id="about">
+        <h2>About</h2>
+        <p>
+          I study solar active regions and flare prediction. I build
+          machine-learning models (β-VAE, KNN, LSTMs) on
+          SHARP magnetogram data and time-series imagery to understand the dynamics of magnetic fields.
+        </p>
+        <div>
+          <span class="pill">Solar physics</span>
+          <span class="pill">Time-series ML</span>
+          <span class="pill">Unsupervised learning</span>
+          <span class="pill">Python</span>
+        </div>
+      </section>
 
-  <script>
-    // Auto-pull your top repos (edit username and filtering)
-    const username = "your-username";
-    fetch(`https://api.github.com/users/${username}/repos?per_page=100&sort=updated`)
-      .then(r => r.json())
-      .then(repos => {
-        const featured = repos
-          .filter(r => !r.fork)                       // hide forks
-          .filter(r => !r.archived)                   // hide archived
-          .filter(r => (r.topics||[]).includes("showcase") || r.stargazers_count > 0)
-          .sort((a,b)=> b.stargazers_count - a.stargazers_count)
-          .slice(0, 9);
+      <!-- HIGHLIGHTS -->
+      <section id="highlights">
+        <h2>Highlights</h2>
+        <div class="grid cols-2">
+          <div class="card">
+            <strong>β-VAE for Active Regions</strong><br>
+            Disentangling latent dynamics of AR magnetic fields; reconstruction & generalization on unseen ARs.
+            <div class="sub"><a href="#">preprint</a> • <a href="#">code</a></div>
+          </div>
+          <div class="card">
+            <strong>KNN scheme for flare likelihood</strong><br>
+            Chronological splits and leakage-safe evaluation across cycles.
+            <div class="sub"><a href="#">poster</a></div>
+          </div>
+        </div>
+      </section>
 
-        const container = document.getElementById('projects');
-        featured.forEach(r => {
-          const el = document.createElement('article');
-          el.className = "card";
-          el.innerHTML = `
-            <h3><a href="${r.homepage || r.html_url}" target="_blank" rel="noopener">${r.name}</a></h3>
-            <p>${r.description || "No description provided."}</p>
-            <p>★ ${r.stargazers_count} · ${r.language || "—"}</p>
-            <p><a href="${r.html_url}">Repo</a>${r.homepage ? ` · <a href="${r.homepage}">Demo</a>` : ""}</p>
-          `;
-          container.appendChild(el);
-        });
-      });
-  </script>
+      <!-- PUBLICATIONS -->
+      <section id="publications">
+        <h2>Selected publications</h2>
+        <ul>
+          <li><strong>Title of paper</strong>. Journal, 2025. <span class="sub"><a href="#">PDF</a> • <a href="#">BibTeX</a></span></li>
+          <li><strong>Another paper</strong>. Conference, 2024. <span class="sub"><a href="#">PDF</a></span></li>
+        </ul>
+      </section>
 
-  <footer>© <span id="y"></span> Your Name</footer>
+      <!-- PROJECTS -->
+      <section id="projects">
+        <h2>Projects</h2>
+        <div class="grid cols-2">
+          <div class="card">
+            <div><strong>SHARP + VAE dataset</strong></div>
+            <div class="sub">Combined empirical SHARP quantities with ML features from β-VAE.</div>
+            <div class="sub"><a href="#">dataset</a> • <a href="#">docs</a></div>
+          </div>
+          <div class="card">
+            <div><strong>Time-aligned LSTM predictions</strong></div>
+            <div class="sub">Ground-truth alignment via HARPNUM + target_times metadata.</div>
+            <div class="sub"><a href="#">code</a></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CONTACT -->
+      <section id="contact">
+        <h2>Contact</h2>
+        <p class="sub">
+          <span class="nowrap">you@example.com</span> &middot;
+          <a href="https://github.com/astrodineva">GitHub</a> &middot;
+          <a href="https://linkedin.com/">LinkedIn</a>
+        </p>
+      </section>
+    </main>
+
+    <footer>
+      © <span id="y"></span> D. Dineva · <a href="https://astrodineva.github.io">astrodineva.github.io</a>
+    </footer>
+  </div>
   <script>document.getElementById('y').textContent = new Date().getFullYear()</script>
 </body>
 </html>
