@@ -8,37 +8,27 @@
   <link rel="icon" href="favicon.ico">
   <style>
 :root{
-  /* Light mode */
-  --brand:#8B1C3D;                 /* primary burgundy */
-  --bg:#FFF7F9;                    /* very light rose */
-  --fg:#111114;
-  --muted:#6b6b6b;
+  --bg:#fff; --fg:#0b0b0c; --muted:#555;
+  --brand:#8B1C3D;            /* burgundy */
   --link:var(--brand);
-  --card:#FAF0F3;                  /* soft card tint */
-  --border:#E8D5DA;                /* subtle rosy border */
+  --card:#f6f7f9; --border:#e6e7eb;
 }
-
 @media (prefers-color-scheme: dark){
   :root{
-    /* Dark mode */
-    --brand:#E0657E;               /* brighten for dark */
-    --bg:#15090E;                  /* deep burgundy black */
-    --fg:#F3F4F6;
-    --muted:#B9AEB3;
+    --bg:#0b0b0c; --fg:#f3f4f6; --muted:#a1a1aa;
+    --brand:#E0657E;          /* lighter burgundy for dark mode */
     --link:var(--brand);
-    --card:#1E0F15;                /* slightly lighter than bg */
-    --border:#3A222B;
+    --card:#111318; --border:#22242b;
   }
 }
-
-/* Optional: accent elements */
-header { border-bottom: 1px solid var(--border); }
-.card  { background: var(--card); border:1px solid var(--border); }
-.pill  { border-color: var(--brand); color: var(--brand); }
+/* Optional extras */
+h1, h2 { color: var(--fg); }
+.pill{ border-color: var(--brand); color: var(--brand); }
+a:hover{ text-decoration: underline; text-decoration-thickness: 2px; }
     header img{
           width: var(--avatar);
           height: var(--avatar);
-          border-radius:50%;
+          border-radius:10%;
           object-fit:cover;
           background:var(--card);
         }
