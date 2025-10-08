@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="theme-burgundy dark">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -7,44 +7,64 @@
   <meta name="description" content="Astrophysics • Solar physics and Activity • Space Weather • ML for time-series images" />
   <link rel="icon" href="favicon.ico">
   <style>
-:root{
-  --bg:#fff; --fg:#0b0b0c; --muted:#555;
-  --brand:#8B1C3D;            /* burgundy */
-  --link:var(--brand);
-  --card:#f6f7f9; --border:#e6e7eb;
-}
-@media (prefers-color-scheme: dark){
-  :root{
-    --bg:#0b0b0c; --fg:#f3f4f6; --muted:#a1a1aa;
-    --brand:#E0657E;          /* lighter burgundy for dark mode */
-    --link:var(--brand);
-    --card:#111318; --border:#22242b;
-  }
-}
-/* Optional extras */
-h1, h2 { color: var(--fg); }
-.pill{ border-color: var(--brand); color: var(--brand); }
-a:hover{ text-decoration: underline; text-decoration-thickness: 2px; }
+    /* Base tokens (fallbacks) */
+    :root{
+      --bg:#0b0b0c; --fg:#f3f4f6; --muted:#a1a1aa;
+      --brand:#E0657E;            /* burgundy accent in dark */
+      --link:var(--brand);
+      --card:#111318; --border:#22242b;
+      --avatar: 96px;             /* control avatar size here */
+    }
+
+    /* Force dark-burgundy theme via class on <html> */
+    html.theme-burgundy.dark{
+      --brand:#E0657E;
+      --bg:#15090E;               /* deep burgundy background */
+      --fg:#F3F4F6;
+      --muted:#B9AEB3;
+      --link:var(--brand);
+      --card:#1E0F15;             /* slightly lighter than bg */
+      --border:#3A222B;
+    }
+
+    /* Global styles */
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font:16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji","Segoe UI Emoji";
+      color:var(--fg);
+      background:var(--bg);
+    }
+    a{color:var(--link); text-decoration:none}
+    a:hover{text-decoration:underline; text-decoration-thickness:2px}
+    .wrap{max-width:940px; margin:0 auto; padding:24px}
+    header{display:flex; align-items:center; gap:16px; padding:24px 0 8px; border-bottom:1px solid var(--border)}
     header img{
-          width: var(--avatar);
-          height: var(--avatar);
-          border-radius:10%;
-          object-fit:cover;
-          background:var(--card);
-        }
-    h1{font-size:28px; margin:0}
+      width:var(--avatar);
+      height:var(--avatar);
+      border-radius:10%;          /* keep if you like the squircle */
+      object-fit:cover;
+      background:var(--card);
+      border:2px solid var(--border);
+    }
+    h1{font-size:28px; margin:0; color:var(--fg)}
     .sub{color:var(--muted); margin-top:2px}
     nav{display:flex; flex-wrap:wrap; gap:16px; padding:14px 0 4px}
     nav a{padding:6px 10px; border-radius:10px}
     main section{padding:28px 0; border-bottom:1px solid var(--border)}
-    h2{font-size:20px; margin:0 0 10px}
+    h2{font-size:20px; margin:0 0 10px; color:var(--fg)}
     .grid{display:grid; gap:14px}
     @media(min-width:720px){ .grid.cols-2{grid-template-columns:1fr 1fr} }
     .card{padding:14px; background:var(--card); border:1px solid var(--border); border-radius:14px}
     ul{margin:10px 0 0 18px}
     footer{padding:30px 0 60px; color:var(--muted)}
-    .pill{display:inline-block; padding:2px 8px; border:1px solid var(--border); border-radius:999px; margin-right:8px; font-size:12px; color:var(--muted)}
+    .pill{display:inline-block; padding:2px 8px; border:1px solid var(--brand); border-radius:999px; margin-right:8px; font-size:12px; color:var(--brand)}
     .nowrap{white-space:nowrap}
+
+    /* Optional: slightly larger avatar on wide screens */
+    @media (min-width: 720px){
+      :root{ --avatar: 110px; }
+    }
   </style>
 </head>
 <body>
@@ -55,13 +75,14 @@ a:hover{ text-decoration: underline; text-decoration-thickness: 2px; }
       <img src="avatar.jpg" alt="Profile photo" onerror="this.style.display='none'">
       <div>
         <h1>Ekaterina Dineva</h1>
-        <h>Dr. rer. nat. | Solar Physicist </h>     
-        <div class="sub">Solar physics and activity • Space Weather • Machine Learning </div>
+        <!-- Replaced invalid <h> with a styled paragraph -->
+        <p class="sub">Dr. rer. nat. | Solar Physicist</p>
+        <div class="sub">Solar physics and activity • Space Weather • Machine Learning</div>
         <nav>
           <a href="mailto:you@example.com">Email</a>
           <a href="https://github.com/astrodineva">GitHub</a>
-          <a href="https://scholar.google.com/citations?hl=en&view_op=list_works&gmla=AH8HC4wK4De6S6EizE1qap3VP49zga1tEOqrZpaBK2iTFwSfvD-nKRZb9RJp5Jt5eDeJRWJOPPGRzGUwogWC1w&user=2HL2hHcAAAAJ">Google Scholar</a>
-          <a href="https://orcid.org/my-orcid?orcid=0000-0002-4645-4492">ORCID</a>
+          <a href="https://scholar.google.com/citations?hl=en&view_op=list_works&user=2HL2hHcAAAAJ">Google Scholar</a>
+          <a href="https://orcid.org/0000-0002-4645-4492">ORCID</a>
           <a href="assets/cv.pdf">CV</a>
         </nav>
       </div>
@@ -72,16 +93,15 @@ a:hover{ text-decoration: underline; text-decoration-thickness: 2px; }
       <section id="about">
         <h2>About</h2>
         <p>
-        I am a postdoctoral researcher at the Center for Plasma Astrophysics (CmPA) at KU Leuven, where I develop a space-weather forecasting framework using machine 
-        learning (ML) and deep learning methods. I build data-processing pipelines that combine diverse analysis techniques with ML models—such as β-VAE, k-NN, and 
-        LSTMs—for time series, spectra, and images.
-        
-        My research centers on multi-wavelength, information-rich analyses of solar active regions. I am particularly interested in large, magnetically complex regions, 
-        their dynamical evolution, and their flaring potential and eruption precursors. The distinction between eruptive and confined flares remains an open question and 
-        an active area of research. To address it, we leverage both data-driven (machine-learning-based features) and physics-based parameterisation of the available observations. 
-        Success on this front could enable the integration of these insights into on-board diagnostics and analysis for the next generation of Solar System explorers.
-          
-           
+          I am a postdoctoral researcher at the Center for Plasma Astrophysics (CmPA) at KU Leuven, where I develop a space-weather forecasting framework using machine 
+          learning (ML) and deep learning methods. I build data-processing pipelines that combine diverse analysis techniques with ML models—such as β-VAE, k-NN, and 
+          LSTMs—for time series, spectra, and images.
+        </p>
+        <p>
+          My research centers on multi-wavelength, information-rich analyses of solar active regions. I am particularly interested in large, magnetically complex regions, 
+          their dynamical evolution, and their flaring potential and eruption precursors. The distinction between eruptive and confined flares remains an open question and 
+          an active area of research. To address it, we leverage both data-driven (machine-learning-based features) and physics-based parameterisation of the available observations. 
+          Success on this front could enable the integration of these insights into on-board diagnostics and analysis for the next generation of Solar System explorers.
         </p>
         <div>
           <span class="pill">Solar physics</span>
@@ -93,8 +113,9 @@ a:hover{ text-decoration: underline; text-decoration-thickness: 2px; }
         </div>
       </section>
 
-      <!-- HIGHLIGHTS -->
-<!--      <section id="highlights">
+      <!-- HIGHLIGHTS (kept commented) -->
+      <!--
+      <section id="highlights">
         <h2>Highlights</h2>
         <div class="grid cols-2">
           <div class="card">
@@ -109,18 +130,22 @@ a:hover{ text-decoration: underline; text-decoration-thickness: 2px; }
           </div>
         </div>
       </section>
+      -->
 
-      <!-- PUBLICATIONS -->
-<!--       <section id="publications">
+      <!-- PUBLICATIONS (kept commented) -->
+      <!--
+      <section id="publications">
         <h2>Selected publications</h2>
         <ul>
           <li><strong>Title of paper</strong>. Journal, 2025. <span class="sub"><a href="#">PDF</a> • <a href="#">BibTeX</a></span></li>
           <li><strong>Another paper</strong>. Conference, 2024. <span class="sub"><a href="#">PDF</a></span></li>
         </ul>
       </section>
+      -->
 
-      <!-- PROJECTS -->
-<!--       <section id="projects">
+      <!-- PROJECTS (kept commented) -->
+      <!--
+      <section id="projects">
         <h2>Projects</h2>
         <div class="grid cols-2">
           <div class="card">
@@ -135,6 +160,7 @@ a:hover{ text-decoration: underline; text-decoration-thickness: 2px; }
           </div>
         </div>
       </section>
+      -->
 
       <!-- CONTACT -->
       <section id="contact">
@@ -142,8 +168,8 @@ a:hover{ text-decoration: underline; text-decoration-thickness: 2px; }
         <p class="sub">
           <span class="nowrap">ekaterina.dineva@kuleuven.be</span> &middot;
           <a href="https://github.com/astrodineva">GitHub</a> &middot;
-          <a href="https://www.linkedin.com/in/ekaterina-dineva/">LinkedIn</a>
-          <a href=<a href="https://www.linkedin.com/in/ekaterina-dineva/">Bluesky 🦋</a>
+          <a href="https://www.linkedin.com/in/ekaterina-dineva/">LinkedIn</a> &middot;
+          <a href="https://bsky.app/profile/astrodineva.bsky.social">Bluesky 🦋</a>
         </p>
       </section>
     </main>
@@ -152,6 +178,10 @@ a:hover{ text-decoration: underline; text-decoration-thickness: 2px; }
       © <span id="y"></span> D. Dineva · <a href="https://astrodineva.github.io">astrodineva.github.io</a>
     </footer>
   </div>
-  <script>document.getElementById('y').textContent = new Date().getFullYear()</script>
+
+  <script>
+    document.getElementById('y').textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
+
