@@ -14,7 +14,7 @@
       --brand:#E0657E;            /* burgundy accent in dark */
       --link:var(--brand);
       --card:#111318; --border:#22242b;
-      --avatar: 196px;             /* control avatar size here */
+      --avatar: 296px;             /* control avatar size here */
     }
 
     /* Force dark-burgundy theme via class on <html> */
@@ -68,6 +68,47 @@
     }
   </style>
 </head>
+   
+<script>
+  (function () {
+    // Make external http(s) links open in a new tab
+    document.querySelectorAll('a[href^="http"]').forEach(a => {
+      try {
+        const url = new URL(a.href, location.href);
+        if (url.hostname !== location.hostname) {
+          a.target = "_blank";
+          a.rel = "noopener noreferrer";
+          // Fallback for environments that hijack target:
+          a.addEventListener('click', function (e) {
+            // If something prevented default, bail.
+            if (e.defaultPrevented) return;
+            e.preventDefault();
+            window.open(a.href, '_blank', 'noopener');
+          });
+        }
+      } catch (_) {}
+    });
+
+    // Optional: also open local PDFs in a new tab
+    document.querySelectorAll('a[href$=".pdf"]').forEach(a => {
+      a.target = "_blank";
+      a.rel = "noopener noreferrer";
+      a.addEventListener('click', function (e) {
+        if (e.defaultPrevented) return;
+        e.preventDefault();
+        window.open(a.href, '_blank', 'noopener');
+      });
+    });
+  })();
+</script>
+
+<script>
+  document.getElementById('y').textContent = new Date().getFullYear();
+</script>
+<!-- paste the new script here -->
+
+
+  
 <body>
   <div class="wrap">
     <!-- HEADER -->
