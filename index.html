@@ -66,6 +66,41 @@
     .post-title a{color:var(--fg)}
     .post-title a:hover{color:var(--link)}
 
+    .blog-controls{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
+    }
+  
+    .blog-controls select,
+    .blog-controls input{
+      background:var(--card);
+      color:var(--fg);
+      border:1px solid var(--border);
+      border-radius:10px;
+      padding:8px 10px;
+      outline:none;
+    }
+    
+    .blog-controls input{ min-width: 220px; flex: 1; }
+    
+    .blog-year{
+      margin:20px 0 10px;
+      font-size:16px;
+      color:var(--fg);
+    }
+    
+    .blog-grid{ margin-top: 10px; }
+  
+    .blog-empty{
+      padding:14px;
+      border:1px dashed var(--border);
+      border-radius:14px;
+      color:var(--muted);
+    }
+
+
     @media (min-width: 720px){
       :root{ --avatar: 110px; }
     }
@@ -119,12 +154,29 @@
 
       <!-- BLOG (auto-rendered) -->
       <section id="blog">
-        <h2>Blog</h2>
+        <h2>Work Blog</h2>
         <p class="sub">Notes on solar physics, space weather, and ML for time-series images.</p>
-
-        <!-- JS will inject blog cards here -->
-        <div class="grid cols-2" id="blog-list"></div>
+      
+        <div class="blog-controls card">
+          <label class="sub" for="topicFilter">Topic</label>
+          <select id="topicFilter" aria-label="Filter by topic"></select>
+      
+          <label class="sub" for="searchInput">Search</label>
+          <input id="searchInput" type="search" placeholder="Search title / tags / text..." />
+      
+          <label class="sub" for="sortOrder">Sort</label>
+          <select id="sortOrder" aria-label="Sort order">
+            <option value="desc" selected>Newest first</option>
+            <option value="asc">Oldest first</option>
+          </select>
+      
+          <div class="sub" id="blogCount" style="margin-left:auto;"></div>
+        </div>
+      
+        <!-- JS injects grouped posts here -->
+        <div id="blog-groups"></div>
       </section>
+
 
       <!-- CONTACT -->
       <section id="contact">
@@ -149,39 +201,135 @@
     // Footer year
     const y = document.getElementById('y');
     if (y) y.textContent = new Date().getFullYear();
-
-    // Blog posts: edit only this array to add new posts
+  
+    // ---- EDIT THIS LIST TO ADD POSTS ----
     const posts = [
       {
-        title: "Your first post title",
-        date: "2026-01-09",
-        tags: ["Space Weather"],
-        href: "posts/your-first-post.html",
-        excerpt: "A short 1–2 sentence summary of what this post is about."
+        title: "Eruptive vs confined flares: what features actually help?",
+        date: "2026-01-07",
+        topic: "Solar Activity",
+        tags: ["Flares", "Active Regions"],
+        href: "posts/eruptive-vs-confined.html",
+        excerpt: "A short look at which observational and ML features separate eruptive from confined events."
       },
       {
         title: "VAE generalization on unseen active regions",
         date: "2025-12-20",
-        tags: ["ML", "β-VAE"],
+        topic: "Machine Learning",
+        tags: ["β-VAE", "Representation Learning"],
         href: "posts/vae-generalization.html",
-        excerpt: "What worked, what failed, and what I changed in the pipeline."
+        excerpt: "What worked, what failed, and what I changed in the pipeline to reduce leakage and improve generalization."
       }
     ];
-
-    // Render blog cards
-    const blogList = document.getElementById('blog-list');
-    if (blogList) {
-      const fmt = (iso) => {
-        const d = new Date(iso + "T00:00:00");
-        return d.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "2-digit" });
-      };
-
-      blogList.innerHTML = posts.map(p => `
+    // -------------------------------------
+  
+    const topicFilter = document.getElementById('topicFilter');
+    const searchInput = document.getElementById('searchInput');
+    const sortOrder = document.getElementById('sortOrder');
+    const blogGroups = document.getElementById('blog-groups');
+    const blogCount = document.getElementById('blogCount');
+  
+    if (!topicFilter || !searchInput || !sortOrder || !blogGroups) return;
+  
+    // Fill topic dropdown
+    const topics = Array.from(new Set(posts.map(p => p.topic))).sort((a,b) => a.localeCompare(b));
+    topicFilter.innerHTML = [
+      `<option value="__all__">All topics</option>`,
+      ...topics.map(t => `<option value="${escapeHtml(t)}">${escapeHtml(t)}</option>`)
+    ].join("");
+  
+    render();
+    topicFilter.addEventListener('change', render);
+    searchInput.addEventListener('input', render);
+    sortOrder.addEventListener('change', render);
+  
+    function render() {
+      const topic = topicFilter.value;
+      const q = searchInput.value.trim().toLowerCase();
+      const order = sortOrder.value;
+  
+      let filtered = posts.filter(p => {
+        if (topic !== "__all__" && p.topic !== topic) return false;
+        if (!q) return true;
+        const hay = [p.title, p.topic, (p.tags||[]).join(" "), p.excerpt||""].join(" ").toLowerCase();
+        return hay.includes(q);
+      });
+  
+      filtered.sort((a,b) => {
+        const da = new Date(a.date + "T00:00:00").getTime();
+        const db = new Date(b.date + "T00:00:00").getTime();
+        return order === "asc" ? (da - db) : (db - da);
+      });
+  
+      if (blogCount) blogCount.textContent = `${filtered.length} post${filtered.length === 1 ? "" : "s"}`;
+  
+      if (filtered.length === 0) {
+        blogGroups.innerHTML = `<div class="blog-empty">No posts match your filters.</div>`;
+        return;
+      }
+  
+      const grouped = groupBy(filtered, p => new Date(p.date + "T00:00:00").getFullYear());
+      const years = Object.keys(grouped).map(Number).sort((a,b) => order === "asc" ? a-b : b-a);
+  
+      blogGroups.innerHTML = years.map(year => `
+        <div class="blog-year">${year}</div>
+        <div class="grid cols-2 blog-grid">
+          ${grouped[year].map(renderCard).join("")}
+        </div>
+      `).join("");
+    }
+  
+    function renderCard(p) {
+      const pretty = formatDate(p.date);
+      const tags = (p.tags || []).map(t => `<span class="pill">${escapeHtml(t)}</span>`).join(" ");
+      return `
         <article class="card">
           <div class="meta">
-            ${fmt(p.date)} · ${p.tags.map(t => `<span class="pill">${t}</span>`).join(" ")}
+            ${pretty} · <span class="pill">${escapeHtml(p.topic)}</span> ${tags}
           </div>
-          <h3 class="post-title"><a href="${p.href}">${p.title}</a></h3>
-          <p class="sub">${p.excerpt}</p>
+          <h3 class="post-title"><a href="${p.href}">${escapeHtml(p.title)}</a></h3>
+          <p class="sub">${escapeHtml(p.excerpt || "")}</p>
         </article>
-      `).join("");
+      `;
+    }
+  
+    function formatDate(iso) {
+      const d = new Date(iso + "T00:00:00");
+      return d.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "2-digit" });
+    }
+  
+    function groupBy(arr, keyFn) {
+      return arr.reduce((acc, item) => {
+        const k = keyFn(item);
+        (acc[k] ||= []).push(item);
+        return acc;
+      }, {});
+    }
+  
+    function escapeHtml(s) {
+      return String(s)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+  
+    // External links open in new tab
+    document.querySelectorAll('a[href^="http"]').forEach(a => {
+      try {
+        const url = new URL(a.href, location.href);
+        if (url.hostname !== location.hostname) {
+          a.target = "_blank";
+          a.rel = "noopener noreferrer";
+        }
+      } catch (_) {}
+    });
+  
+    // PDFs open in new tab
+    document.querySelectorAll('a[href$=".pdf"]').forEach(a => {
+      a.target = "_blank";
+      a.rel = "noopener noreferrer";
+    });
+  });
+  </script>
