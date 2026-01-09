@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" class="theme-burgundy dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Eruptive vs confined flares — Notes</title>
+  <meta name="description" content="Notes on features distinguishing eruptive vs confined flares." />
+  <link rel="icon" href="../favicon.ico">
+
+  <!-- Minimal: reuse the same look by copying your CSS here,
+       OR (better) move your CSS into /styles.css and link it:
+       <link rel="stylesheet" href="../styles.css">
+  -->
+  <style>
+    :root{
+      --bg:#0b0b0c; --fg:#f3f4f6; --muted:#a1a1aa;
+      --brand:#E0657E; --link:var(--brand);
+      --card:#111318; --border:#22242b;
+    }
+    html.theme-burgundy.dark{
+      --brand:#E0657E;
+      --bg:#15090E; --fg:#F3F4F6; --muted:#B9AEB3;
+      --link:var(--brand);
+      --card:#1E0F15; --border:#3A222B;
+    }
+    *{box-sizing:border-box}
+    body{margin:0; font:16px/1.7 system-ui; color:var(--fg); background:var(--bg);}
+    a{color:var(--link); text-decoration:none}
+    a:hover{text-decoration:underline; text-decoration-thickness:2px}
+    .wrap{max-width:940px; margin:0 auto; padding:24px}
+    header{padding:24px 0 8px; border-bottom:1px solid var(--border)}
+    h1{font-size:28px; margin:0}
+    .sub{color:var(--muted); margin-top:6px}
+    main{padding:22px 0}
+    .card{padding:14px; background:var(--card); border:1px solid var(--border); border-radius:14px}
+    figure{margin:18px 0}
+    figure img{max-width:100%; border-radius:14px; border:1px solid var(--border); display:block}
+    figcaption{color:var(--muted); font-size:13px; margin-top:8px}
+    footer{padding:28px 0 60px; color:var(--muted); border-top:1px solid var(--border)}
+    .pill{display:inline-block; padding:2px 8px; border:1px solid var(--brand); border-radius:999px; margin-right:8px; font-size:12px; color:var(--brand)}
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <h1>Eruptive vs confined flares: what features actually help?</h1>
+      <div class="sub">Jan 09, 2026 · <span class="pill">Solar Activity</span> <span class="pill">Flares</span></div>
+      <div class="sub"><a href="../index.html#blog">← Back to Work Blog</a></div>
+    </header>
+
+    <main>
+      <div class="card">
+        <p>
+          This post summarizes a few diagnostics I’ve been testing for separating eruptive vs confined flares,
+          focusing on features that are robust across active regions and observing conditions.
+        </p>
+
+        <h2>1) Data + preprocessing</h2>
+        <p>
+          Briefly describe your dataset, cadence, selection criteria, and any normalization / co-alignment.
+        </p>
+
+        <figure>
+          <!-- IMPORTANT: from a post inside /posts/, go up one level with ../ -->
+          <img src="../assets/blog/2026-01-09_test_post/fig1.png"
+               alt="Example figure showing AR evolution or feature comparison">
+          <figcaption>
+            Figure 1. Example caption describing what the image shows (instrument, wavelength, timeframe).
+          </figcaption>
+        </figure>
+
+        <h2>2) Feature comparison</h2>
+        <p>
+          Explain the features, results, and what you observed. Add another figure if needed.
+        </p>
+
+        <figure>
+          <img src="../assets/blog/2026-01-09_test_post/fig2.jpg"
+               alt="Second figure showing result plot or qualitative comparison">
+          <figcaption>
+            Figure 2. Caption with the key point / takeaway.
+          </figcaption>
+        </figure>
+
+        <h2>Takeaways</h2>
+        <ul>
+          <li>Feature A seems stable across ARs under chronological splits.</li>
+          <li>Feature B looks strong but may be sensitive to selection bias.</li>
+          <li>Next: validate across solar-cycle phases.</li>
+        </ul>
+      </div>
+    </main>
+
+    <footer>
+      © <span id="y"></span> D. Dineva · <a href="../index.html">Home</a>
+    </footer>
+  </div>
+
+  <script>
+    // year
+    const y = document.getElementById('y');
+    if (y) y.textContent = new Date().getFullYear();
+
+    // open external links in new tab
+    document.querySelectorAll('a[href^="http"]').forEach(a => {
+      try {
+        const url = new URL(a.href, location.href);
+        if (url.hostname !== location.hostname) {
+          a.target = "_blank";
+          a.rel = "noopener noreferrer";
+        }
+      } catch (_) {}
+    });
+  </script>
+</body>
+</html>
